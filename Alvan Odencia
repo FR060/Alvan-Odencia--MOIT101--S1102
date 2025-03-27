@@ -1,0 +1,90 @@
+package com.mycompany.employeesalarycalculator;
+
+/**
+ *
+ * @author FR0G
+ */
+import java.util.Scanner;
+
+public class EmployeeSalaryCalculator{
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        
+        
+        
+                // EMPLOYEE DETAILS
+         String employeeName = "Salcedo Anthony";
+                             
+        double hourlyRate = 302.53;
+        
+       // Allowance and Subsidy per month:
+                            
+            // Rice Subsidy = 1,500
+            // PhoneAllowance = 1,000
+            // ClothingAllowance = 1,000
+            //// Divided in to 4 ( 4 Weeks )
+       
+        double riceSubsidy = 375;
+        double phoneAllowance = 250;
+        double clothingAllowance = 250;
+
+        
+        
+      // DEDUCTIONS (Monthly) //
+        
+            // SSS = 1,125/monthly
+            // Philhealth = 1,152.75/monthly
+            // Pagibig = 100/monthly
+            // WithholdingTax = 3,348/monthly
+        ///// ***Deductions divided into 4 ( 4 weeks )
+       
+        double sssDeduction = 281.25;
+        double philhealthDeduction = 381.1875;
+        double pagibigDeduction = 25;
+        double withholdingTax = 837.1125;
+
+        // Timein and Timeout for the week
+        String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+        double totalHoursWorked = 0;
+
+        for (String day : days) {
+            String[] times = getTimeInput(scanner, day);
+            totalHoursWorked += calculateHoursWorked(times[0], times[1]);
+        }
+
+        // Calculation
+        double weeklySalary = totalHoursWorked * hourlyRate;
+        double totalDeductions = sssDeduction + philhealthDeduction + pagibigDeduction + withholdingTax;
+        double takeHomePay = (weeklySalary + riceSubsidy + phoneAllowance + clothingAllowance) - totalDeductions;
+
+        // Resultss
+        System.out.println("Employee Name: " + employeeName);
+        System.out.println("Total Hours Worked: " + totalHoursWorked);
+        System.out.println("Weekly Salary: " + weeklySalary);
+        System.out.println("Total Deductions for this Week: " + totalDeductions);
+        System.out.println("Take Home Pay This Week: " + takeHomePay);
+    }
+
+    private static String[] getTimeInput(Scanner scanner, String day) {
+        System.out.print(day + "-IN (HH:MM): ");
+        String timeIn = scanner.nextLine();
+        System.out.print(day + "-OUT (HH:MM): ");
+        String timeOut = scanner.nextLine();
+        return new String[]{timeIn, timeOut};
+    }
+
+    private static double calculateHoursWorked(String timeIn, String timeOut) {
+        String[] inTime = timeIn.split(":");
+        String[] outTime = timeOut.split(":");
+
+        int inHours = Integer.parseInt(inTime[0]);
+        int inMinutes = Integer.parseInt(inTime[1]);
+        int outHours = Integer.parseInt(outTime[0]);
+        int outMinutes = Integer.parseInt(outTime[1]);
+
+        double hoursWorked = (outHours + outMinutes / 60.0) - (inHours + inMinutes / 60.0);
+        return hoursWorked;
+        
+    }
+}
